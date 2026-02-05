@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora MultyViajes</title>
+    <title>Calculadora MultiViajes</title>
     <link rel="icon" href="src/icon.png">
     <style>
         :root {
@@ -59,13 +59,13 @@
             position: absolute;
             top: 20px;
             right: 20px;
-            background: rgba(0, 0, 0, 0.1);
-            border: 2px solid var(--text-primary);
+            background: linear-gradient(135deg, var(--accent-color) 0%, #764ba2 100%);
+            border: none;
             padding: 8px 12px;
             border-radius: 50%;
             cursor: pointer;
             font-size: 18px;
-            color: var(--text-primary);
+            color: white;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
@@ -75,11 +75,17 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
+        body.dark-mode .theme-toggle {
+            background: linear-gradient(135deg, #ff4545 0%, #cc2d2d 100%);
+        }
+
         .theme-toggle:hover {
             transform: scale(1.1);
-            box-shadow: 0 6px 16px rgba(255, 69, 69, 0.3);
-            border-color: var(--accent-color);
-            background: rgba(0, 0, 0, 0.15);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        body.dark-mode .theme-toggle:hover {
+            box-shadow: 0 6px 16px rgba(255, 69, 69, 0.5);
         }
 
         .theme-toggle:active {
@@ -447,7 +453,7 @@
 <body>
     <div class="container">
         <button class="theme-toggle" id="themeToggle" title="Cambiar tema">🌙</button>
-        <h1>🏨 Calculadora MultyViajes</h1>
+        <h1>🏨 Calculadora MultiViajes</h1>
         <p class="subtitle">Cálculo de costo por pasajero</p>
 
         <div class="info-box">
@@ -719,5 +725,3 @@
     </script>
 </body>
 </html>
-
-
