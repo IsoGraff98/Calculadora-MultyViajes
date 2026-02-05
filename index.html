@@ -477,7 +477,7 @@
                 <div class="form-group">
                     <label for="utilidad">Utilidad Agregada al Hotel *</label>
                     <div class="input-wrapper">
-                        <input type="number" id="utilidad" placeholder="100000" min="0" step="0.01">
+                        <input type="number" id="utilidad" placeholder="80000" min="0" step="0.01">
                         <span class="currency">COP</span>
                     </div>
                 </div>
@@ -580,12 +580,12 @@
         const hotelInput = document.getElementById('hotelCOP');
         const utilidadInput = document.getElementById('utilidad');
 
-        // If user types a hotel cost, auto-set utilidad to 100000 only if empty
+        // If user types a hotel cost, auto-set utilidad to 80000 only if empty
         hotelInput.addEventListener('input', function() {
             const v = parseFloat(hotelInput.value);
             if (!isNaN(v) && v > 0) {
                 if (!utilidadInput.value) {
-                    utilidadInput.value = '100000';
+                    utilidadInput.value = '80000';
                     utilidadInput.dataset.autoset = 'true';
                 }
             } else {
@@ -725,4 +725,5 @@
     </script>
 </body>
 </html>
+
 
