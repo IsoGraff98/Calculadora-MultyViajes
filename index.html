@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora MultiViajes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        input[type="number"] {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .currency {
+            margin-left: 10px;
+            font-weight: 600;
+            color: #666;
+            font-size: 14px;
+            min-width: 50px;
+        }
+
+        .divider {
+            border: none;
+            border-top: 2px solid #f0f0f0;
+            margin: 30px 0;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .result-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 30px;
+            display: none;
+        }
+
+        .result-section.visible {
+            display: block;
+        }
+
+        .result-title {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .result-value {
+            font-size: 48px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .result-breakdown {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 13px;
+        }
+
+        .breakdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .breakdown-label {
+            color: #666;
+        }
+
+        .breakdown-value {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .error {
+            color: #e74c3c;
+            font-size: 13px;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .error.visible {
+            display: block;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 25px;
+            font-size: 13px;
+            color: #1565c0;
+            line-height: 1.6;
+        }
+
+        .formula {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #333;
+            line-height: 1.8;
+        }
+
+        .total-calculation {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 16px;
+            color: #856404;
+        }
+
+        .total-calculation-title {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .total-calculation-expression {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .total-calculation-result {
+            font-size: 20px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        /* Responsive styles for mobile devices */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                border-radius: 12px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            .subtitle {
+                font-size: 13px;
+                margin-bottom: 18px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .form-row.full {
+                grid-template-columns: 1fr;
+            }
+
+            input[type="number"],
+            input[type="text"] {
+                padding: 14px;
+                font-size: 16px;
+            }
+
+            .currency {
+                margin-left: 8px;
+                font-size: 13px;
+                min-width: 40px;
+            }
+
+            button {
+                padding: 16px;
+                font-size: 16px;
+                border-radius: 10px;
+            }
+
+            .result-section {
+                padding: 18px;
+                margin-top: 20px;
+            }
+
+            .result-value {
+                font-size: 28px;
+            }
+
+            .result-breakdown {
+                padding: 12px;
+            }
+
+            .breakdown-item {
+                font-size: 14px;
+            }
+
+            .info-box {
+                font-size: 13px;
+            }
+
+            .formula {
+                font-size: 12px;
+            }
+
+            body {
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            h1 { font-size: 18px; }
+            .result-value { font-size: 24px; }
+            input[type="number"], input[type="text"] { padding: 12px; font-size: 15px; }
+            button { padding: 14px; font-size: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏨 Calculadora MultiViajes</h1>
+        <p class="subtitle">Cálculo de costo por pasajero</p>
+
+        <div class="info-box">
+            <strong>Fórmula:</strong> Hotel = ((Costo Hotel / Pax) + Utilidad pp) / 3.550 + Tours + Transporte
+        </div>
+
+        <form id="calculatorForm">
+            <div class="form-group">
+                <label for="hotelCOP">Costo Neto del Hotel</label>
+                <div class="input-wrapper">
+                    <input type="number" id="hotelCOP" placeholder="Neto hotel" min="0" step="0.01">
+                    <span class="currency">COP</span>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="pasajeros">Cantidad de Pasajeros *</label>
+                    <input type="number" id="pasajeros" placeholder="Nro. Paxs" value="1" required min="1" step="1">
+                </div>
+                <div class="form-group">
+                    <label for="utilidad">Utilidad Agregada al Hotel *</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="utilidad" placeholder="100000" min="0" step="0.01">
+                        <span class="currency">COP</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="trm">Cambio del Dólar (TRM) *</label>
+                    <input type="number" id="trm" placeholder="3550" value="3550" required min="0" step="0.01">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="tour1">Tours Compartidos (precio individual)</label>
+                <div class="input-wrapper">
+                    <input type="text" id="tour1" placeholder="Ej: 30 + 32" min="0" step="0.01">
+                    <span class="currency">USD</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="privateTours">Tours privados (precio por vehículos)</label>
+                <div class="input-wrapper">
+                    <input type="text" id="privateTours" placeholder="Ej: 200 + 230" min="0" step="0.01">
+                    <span class="currency">USD</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="transport">Transporte (precio por vehículo)</label>
+                <div class="input-wrapper">
+                    <input type="text" id="transport" placeholder="Ej: 90 o 45 + 45" min="0" step="0.01">
+                    <span class="currency">USD</span>
+                </div>
+            </div>
+
+            <button type="submit">Calcular Costo por Persona</button>
+            <div class="error" id="error"></div>
+        </form>
+
+        <div class="result-section" id="resultSection">
+            <div style="text-align: left; font-size: 36px; font-weight: bold; color: #667eea; margin-bottom: 20px;">
+                <div style="margin-bottom: 12px;" id="totalExpression"></div>
+                <div id="totalLine"></div>
+            </div>
+
+            <div class="result-breakdown">
+                <div class="breakdown-item">
+                    <span class="breakdown-label">Hotel (COP convertido a USD):</span>
+                    <span class="breakdown-value" id="hotelResult">$0.00</span>
+                </div>
+                <div class="breakdown-item">
+                    <span class="breakdown-label">Utilidad (COP convertido a USD):</span>
+                    <span class="breakdown-value" id="utilityResult">$0.00</span>
+                </div>
+                <div class="breakdown-item">
+                    <span class="breakdown-label">Tours:</span>
+                    <span class="breakdown-value" id="tour1Result">$0.00</span>
+                </div>
+                <div class="breakdown-item">
+                    <span class="breakdown-label">Tours privados por persona:</span>
+                    <span class="breakdown-value" id="privateToursResult">$0.00</span>
+                </div>
+                <div class="breakdown-item">
+                    <span class="breakdown-label">Transporte por persona:</span>
+                    <span class="breakdown-value" id="transportResult">$0.00</span>
+                </div>
+            </div>
+
+            <div class="formula">
+                <div id="formulaDisplay"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('calculatorForm');
+        const resultSection = document.getElementById('resultSection');
+        const errorDiv = document.getElementById('error');
+        let TRM = 3550; // Tasa de cambio COP a USD (será actualizada por el usuario)
+
+        // Auto-fill utilidad only when hotel net cost is provided
+        const hotelInput = document.getElementById('hotelCOP');
+        const utilidadInput = document.getElementById('utilidad');
+
+        // If user types a hotel cost, auto-set utilidad to 100000 only if empty
+        hotelInput.addEventListener('input', function() {
+            const v = parseFloat(hotelInput.value);
+            if (!isNaN(v) && v > 0) {
+                if (!utilidadInput.value) {
+                    utilidadInput.value = '100000';
+                    utilidadInput.dataset.autoset = 'true';
+                }
+            } else {
+                // clear auto-set utilidad when hotel cost is removed
+                if (utilidadInput.dataset.autoset === 'true') {
+                    utilidadInput.value = '';
+                    utilidadInput.removeAttribute('data-autoset');
+                }
+            }
+        });
+
+        // If the user manually edits utilidad, remove autoset flag
+        utilidadInput.addEventListener('input', function() {
+            if (utilidadInput.dataset.autoset) {
+                utilidadInput.removeAttribute('data-autoset');
+            }
+        });
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get input values
+            const hotelCOP = parseFloat(document.getElementById('hotelCOP').value) || 0;
+            const pasajeros = parseInt(document.getElementById('pasajeros').value);
+            const utilidadCOP = parseFloat(document.getElementById('utilidad').value) || 0;
+            const trmInput = parseFloat(document.getElementById('trm').value);
+            const tour1Input = document.getElementById('tour1').value.trim();
+            const transportInput = document.getElementById('transport').value.trim();
+            const privateToursInput = document.getElementById('privateTours').value.trim();
+            
+            // Evaluate tour1 input (allows math expressions like "45 + 45")
+            let tour1USD = 0;
+            if (tour1Input !== '') {
+                try {
+                    tour1USD = new Function('return ' + tour1Input)();
+                    if (isNaN(tour1USD)) {
+                        throw new Error('Invalid value');
+                    }
+                } catch (error) {
+                    errorDiv.textContent = 'Tours inválido. Ingresa un número o una operación válida (ej: 45 + 45)';
+                    errorDiv.classList.add('visible');
+                    resultSection.classList.remove('visible');
+                    return;
+                }
+            }
+
+            // Evaluate transport input (allows math expressions like "50 + 50")
+            let transportUSD = 0;
+            if (transportInput !== '') {
+                try {
+                    transportUSD = new Function('return ' + transportInput)();
+                    if (isNaN(transportUSD)) {
+                        throw new Error('Invalid value');
+                    }
+                } catch (error) {
+                    errorDiv.textContent = 'Transporte inválido. Ingresa un número o una operación válida (ej: 50 + 50)';
+                    errorDiv.classList.add('visible');
+                    resultSection.classList.remove('visible');
+                    return;
+                }
+            }
+
+            // Evaluate private tours input (allows math expressions like "100 + 50")
+            let privateToursUSD = 0;
+            if (privateToursInput !== '') {
+                try {
+                    privateToursUSD = new Function('return ' + privateToursInput)();
+                    if (isNaN(privateToursUSD)) {
+                        throw new Error('Invalid value');
+                    }
+                } catch (error) {
+                    errorDiv.textContent = 'Tours privados inválido. Ingresa un número o una operación válida (ej: 100 + 50)';
+                    errorDiv.classList.add('visible');
+                    resultSection.classList.remove('visible');
+                    return;
+                }
+            }
+
+            // Validation
+            errorDiv.classList.remove('visible');
+            if (pasajeros < 1) {
+                errorDiv.textContent = 'La cantidad de pasajeros debe ser mayor a 0';
+                errorDiv.classList.add('visible');
+                resultSection.classList.remove('visible');
+                return;
+            }
+            if (isNaN(trmInput) || trmInput <= 0) {
+                errorDiv.textContent = 'El cambio del dólar debe ser un número mayor a 0';
+                errorDiv.classList.add('visible');
+                resultSection.classList.remove('visible');
+                return;
+            }
+            
+            // Update TRM
+            TRM = trmInput;
+
+            // Calculate each component
+            const hotelPerPerson = hotelCOP / pasajeros;
+            const hotelPlusUtility = hotelPerPerson + utilidadCOP;
+            const totalFromHotel = hotelPlusUtility / TRM;
+            const transportPerPerson = transportUSD / pasajeros;
+            const privateToursPerPerson = privateToursUSD / pasajeros;
+
+            // Total calculation: ((Hotel / Pax) + Utilidad) / TRM + Tours + Tours privados + (Transport USD / Pax)
+            const total = totalFromHotel + tour1USD + privateToursPerPerson + transportPerPerson;
+
+            // Display results
+            const totalPerPerson = Math.ceil(total);
+            const totalForAll = totalPerPerson * pasajeros;
+            document.getElementById('totalExpression').textContent = `${pasajeros} x ${totalPerPerson} USD pp`;
+            document.getElementById('totalLine').textContent = `Total = ${totalForAll} USD`;
+            document.getElementById('hotelResult').textContent = `$${Math.ceil(totalFromHotel)}`;
+            document.getElementById('utilityResult').textContent = `Incluido en hotel`;
+            document.getElementById('tour1Result').textContent = `$${Math.ceil(tour1USD)}`;
+            document.getElementById('privateToursResult').textContent = `$${Math.ceil(privateToursPerPerson)}`;
+            document.getElementById('transportResult').textContent = `$${Math.ceil(transportPerPerson)}`;
+
+            // Display formula
+            const formulaDisplay = document.getElementById('formulaDisplay');
+            formulaDisplay.innerHTML = `
+                <strong>Hotel =</strong> ((${hotelCOP.toLocaleString('es-CO')} COP / ${pasajeros} pax) + ${utilidadCOP.toLocaleString('es-CO')} COP) / ${TRM} + ${tour1Input || '0'} USD + ${privateToursInput || '0'} USD + (${transportUSD.toFixed(2)} USD / ${pasajeros} pax)<br>
+                <strong>Hotel =</strong> ((${hotelPerPerson.toLocaleString('es-CO')} + ${utilidadCOP.toLocaleString('es-CO')}) / ${TRM}) + ${tour1USD} + ${privateToursPerPerson.toFixed(2)} + ${transportPerPerson.toFixed(2)}<br>
+                <strong>Hotel =</strong> (${hotelPlusUtility.toLocaleString('es-CO')} / ${TRM}) + ${tour1USD} + ${privateToursPerPerson.toFixed(2)} + ${transportPerPerson.toFixed(2)}<br>
+                <strong>Hotel =</strong> $${Math.ceil(totalFromHotel)} + $${Math.ceil(tour1USD)} + $${Math.ceil(privateToursPerPerson)} + $${Math.ceil(transportPerPerson)}<br>
+                <strong>Hotel =</strong> <strong style="color: #667eea; font-size: 16px;">$${Math.ceil(total)} USD por persona</strong>
+            `;
+
+            resultSection.classList.add('visible');
+        });
+
+        // Trigger calculation on input change
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            input.addEventListener('change', function() {
+                form.dispatchEvent(new Event('submit'));
+            });
+        });
+    </script>
+</body>
+</html>
